@@ -8,6 +8,7 @@ from airflow.providers.google.cloud.transfers.gcs_to_bigquery import (
     GCSToBigQueryOperator,
 )
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
+from google.cloud import storage
 
 from pydantic import ValidationError
 
@@ -23,12 +24,19 @@ CONFIG_DIR = os.path.join(os.path.dirname(__file__), "configs")
 # -----------------------------
 # 📖 Utility: Read SQL File
 # -----------------------------
-def read_sql(file_path: str) -> str:
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"SQL file not found: {file_path}")
+def read_sql_from_gcs(gcs_path: str) -> str:
+    if not gcs_path.startswith("gs://"):
+        raise ValueError("SQL path must be a GCS path")
 
-    with open(file_path, "r") as f:
-        return f.read()
+    path = gcs_path.replace("gs://", "")
+    bucket_name = path.split("/")[0]
+    blob_path = "/".join(path.split("/")[1:])
+
+    client = storage.Client()
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(blob_path)
+
+    return blob.download_as_text()
 
 
 # -----------------------------
