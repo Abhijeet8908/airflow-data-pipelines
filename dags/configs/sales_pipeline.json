@@ -6,13 +6,13 @@
   "gcs_csv_path": "gs://my-bucket/data/sales/*.csv",
   "skip_leading_rows": 1,
 
-  "project_id": "my-gcp-project",
+  "project_id": "my-project",
   "dataset": "analytics",
 
   "raw_table": "sales_raw",
   "transform_table": "sales_transform",
   "final_table": "sales",
 
-  "transform_sql_path": "/dags/sql/sales_transform.sql",
-  "final_sql_path": "/dags/sql/sales_final.sql"
+  "transform_sql_path": "gs://my-bucket/sql/sales/transform.sql",
+  "final_sql_path": "gs://my-bucket/sql/sales/final.sql"
 }
