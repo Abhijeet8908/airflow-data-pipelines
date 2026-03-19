@@ -91,7 +91,7 @@ def create_dag(config: dict) -> DAG:
         # -----------------------
         # 🔹 TRANSFORM LAYER
         # -----------------------
-        transform_sql = read_sql(config["transform_sql_path"])
+        transform_sql = read_sql_from_gcs(config["transform_sql_path"])
 
         ingest_to_transform_layer = BigQueryInsertJobOperator(
             task_id="ingest_to_transform_layer",
@@ -113,7 +113,7 @@ def create_dag(config: dict) -> DAG:
         # -----------------------
         # 🔹 FINAL LAYER
         # -----------------------
-        final_sql = read_sql(config["final_sql_path"])
+        final_sql = read_sql_from_gcs(config["final_sql_path"])
 
         ingest_to_final_layer = BigQueryInsertJobOperator(
             task_id="ingest_to_final_layer",
