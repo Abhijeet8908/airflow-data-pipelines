@@ -1,0 +1,18 @@
+{
+  "dag_id": "csv_to_bq_revenue_pipeline",
+  "schedule": "@daily",
+  "tags": ["csv", "bq", "revenue"],
+
+  "gcs_csv_path": "gs://my-bucket/data/revenue/*.csv",
+  "skip_leading_rows": 1,
+
+  "project_id": "my-gcp-project",
+  "dataset": "analytics",
+
+  "raw_table": "revenue_raw",
+  "transform_table": "revenue_transform",
+  "final_table": "revenue",
+
+  "transform_sql_path": "/dags/sql/revenue_transform.sql",
+  "final_sql_path": "/dags/sql/revenue_final.sql"
+}
