@@ -39,7 +39,7 @@ jobs:
           gcloud storage rsync ./dags/ ${{ secrets.DAGS_BUCKET_URI }} \
             --recursive \
             --delete-unmatched-destination-objects
-          gcloud storage rsync ./utils/ ${{ secrets.DAGS_BUCKET_URI }} \
+          gcloud storage rsync ./utils/ ${{ secrets.UTILS_BUCKET_URI }} \
             --recursive \
             --delete-unmatched-destination-objects
             
