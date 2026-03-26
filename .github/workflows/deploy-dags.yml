@@ -39,9 +39,15 @@ jobs:
           gcloud storage rsync ./dags/ ${{ secrets.DAGS_BUCKET_URI }} \
             --recursive \
             --delete-unmatched-destination-objects
+            
+          echo "DAG Deployment successful!"
 
+      - name: Sync SQL files to GCS
+        run: |
+          echo "Deploying DAGs to Composer..."
+          
           gcloud storage rsync ./sqls/ ${{ secrets.SQL_PATH_URI }} \
             --recursive \
             --delete-unmatched-destination-objects
             
-          echo "Deployment successful!"
+          echo "SQL Deployment successful!"
