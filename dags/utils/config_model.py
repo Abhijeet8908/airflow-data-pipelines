@@ -15,9 +15,9 @@ class CsvPipelineConfig(BaseModel):
     transform_dataset: Optional[str] = None
     final_dataset: Optional[str] = None
 
-    raw_table: Optional[str] = None
-    transform_table: Optional[str] = None
-    final_table: Optional[str] = None
+    raw_table: str
+    transform_table: str
+    final_table: str
 
     transform_sql_path: str
     final_sql_path: str
