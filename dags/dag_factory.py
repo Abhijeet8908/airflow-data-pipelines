@@ -86,7 +86,7 @@ def create_dag(config: dict) -> DAG:
             destination_project_dataset_table=(
                 f"{config['project_id']}."
                 f"{raw_dataset}."
-                f"{config['raw_table']}"
+                f"{config['table_name'] + '_raw'}"
             ),
             source_format="CSV",
             skip_leading_rows=config.get("skip_leading_rows", 0),
@@ -109,7 +109,7 @@ def create_dag(config: dict) -> DAG:
                     "destinationTable": {
                         "projectId": config["project_id"],
                         "datasetId": transform_dataset,
-                        "tableId": config["transform_table"],
+                        "tableId": config["table_name"] + "_transform",
                     },
                     "writeDisposition": "WRITE_TRUNCATE",
                     "createDisposition": "CREATE_IF_NEEDED",
@@ -131,7 +131,7 @@ def create_dag(config: dict) -> DAG:
                     "destinationTable": {
                         "projectId": config["project_id"],
                         "datasetId": final_dataset,
-                        "tableId": config["final_table"],
+                        "tableId": config["table_name"],
                     },
                     "writeDisposition": "WRITE_TRUNCATE",
                     "createDisposition": "CREATE_IF_NEEDED",
