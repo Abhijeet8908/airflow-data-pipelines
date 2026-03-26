@@ -66,6 +66,13 @@ def create_dag(config: dict) -> DAG:
         start = EmptyOperator(task_id="start")
 
         # -----------------------
+        # 🔹 DATASET DEFAULTS
+        # -----------------------
+        raw_dataset = config.get("raw_dataset") or "raw"
+        transform_dataset = config.get("transform_dataset") or "transform"
+        final_dataset = config.get("final_dataset") or "output"
+
+        # -----------------------
         # 🔹 RAW LAYER (CSV → BQ)
         # -----------------------
         gcs_path = config["gcs_csv_path"].replace("gs://", "")
@@ -78,7 +85,7 @@ def create_dag(config: dict) -> DAG:
             source_objects=[object_path],
             destination_project_dataset_table=(
                 f"{config['project_id']}."
-                f"{config['dataset']}."
+                f"{raw_dataset}."
                 f"{config['raw_table']}"
             ),
             source_format="CSV",
@@ -101,7 +108,7 @@ def create_dag(config: dict) -> DAG:
                     "useLegacySql": False,
                     "destinationTable": {
                         "projectId": config["project_id"],
-                        "datasetId": config["dataset"],
+                        "datasetId": transform_dataset,
                         "tableId": config["transform_table"],
                     },
                     "writeDisposition": "WRITE_TRUNCATE",
@@ -123,7 +130,7 @@ def create_dag(config: dict) -> DAG:
                     "useLegacySql": False,
                     "destinationTable": {
                         "projectId": config["project_id"],
-                        "datasetId": config["dataset"],
+                        "datasetId": final_dataset,
                         "tableId": config["final_table"],
                     },
                     "writeDisposition": "WRITE_TRUNCATE",
