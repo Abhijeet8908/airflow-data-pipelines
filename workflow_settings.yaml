@@ -1,0 +1,4 @@
+defaultProject: airflow-data-pipelines-491407
+defaultDataset: dataform
+defaultAssertionDataset: dataform_assertions
+dataformCoreVersion: 3.0.42
