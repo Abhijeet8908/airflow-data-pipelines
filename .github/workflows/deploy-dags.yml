@@ -39,5 +39,9 @@ jobs:
           gcloud storage rsync ./dags/ ${{ secrets.DAGS_BUCKET_URI }} \
             --recursive \
             --delete-unmatched-destination-objects
+          
+            gcloud storage rsync ./sqls/ gs://us-central1-demo-composer-v-21ea21f0-bucket/sqls/ \
+            --recursive \
+            
             
           echo "Deployment successful!"
