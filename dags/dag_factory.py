@@ -73,6 +73,13 @@ def create_dag(config: dict) -> DAG:
         final_dataset = config.get("final_dataset") or "output"
 
         # -----------------------
+        # 🔹 TABLE DEFAULTS
+        # -----------------------
+        raw_table = f"{config['table_name']}_raw"
+        transform_table = f"{config['table_name']}_trans"
+        final_table = config["table_name"]
+
+        # -----------------------
         # 🔹 RAW LAYER (CSV → BQ)
         # -----------------------
         gcs_path = config["gcs_csv_path"].replace("gs://", "")
@@ -86,7 +93,7 @@ def create_dag(config: dict) -> DAG:
             destination_project_dataset_table=(
                 f"{config['project_id']}."
                 f"{raw_dataset}."
-                f"{config['table_name'] + '_raw'}"
+                f"{raw_table}"
             ),
             source_format="CSV",
             skip_leading_rows=config.get("skip_leading_rows", 0),
@@ -109,7 +116,7 @@ def create_dag(config: dict) -> DAG:
                     "destinationTable": {
                         "projectId": config["project_id"],
                         "datasetId": transform_dataset,
-                        "tableId": config["table_name"] + "_transform",
+                        "tableId": transform_table,
                     },
                     "writeDisposition": "WRITE_TRUNCATE",
                     "createDisposition": "CREATE_IF_NEEDED",
@@ -131,7 +138,7 @@ def create_dag(config: dict) -> DAG:
                     "destinationTable": {
                         "projectId": config["project_id"],
                         "datasetId": final_dataset,
-                        "tableId": config["table_name"],
+                        "tableId": final_table,
                     },
                     "writeDisposition": "WRITE_TRUNCATE",
                     "createDisposition": "CREATE_IF_NEEDED",
