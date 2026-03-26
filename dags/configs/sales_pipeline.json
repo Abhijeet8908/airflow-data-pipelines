@@ -10,5 +10,5 @@
   "table_name": "sales",
 
   "dataform_tags": ["sales"],
-  "dataform_service_account": "service-651112091711@gcp-sa-dataform.iam.gserviceaccount.com"
+  "dataform_service_account": "dataform-runner@airflow-data-pipelines-491407.iam.gserviceaccount.com"
 }
