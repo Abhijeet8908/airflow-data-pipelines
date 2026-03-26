@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, validator
-from typing import List
+from typing import List, Optional
 
 
 class CsvPipelineConfig(BaseModel):
@@ -11,7 +11,9 @@ class CsvPipelineConfig(BaseModel):
     skip_leading_rows: int = 0
 
     project_id: str
-    dataset: str
+    raw_dataset: Optional[str] = None
+    transform_dataset: Optional[str] = None
+    final_dataset: Optional[str] = None
 
     raw_table: str
     transform_table: str
