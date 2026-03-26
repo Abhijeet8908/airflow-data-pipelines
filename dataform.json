@@ -1,7 +1,0 @@
-{
-  "defaultSchema": "transform",
-  "assertionSchema": "dataform_assertions",
-  "warehouse": "bigquery",
-  "defaultDatabase": "airflow-data-pipelines-491407",
-  "defaultLocation": "US"
-}
