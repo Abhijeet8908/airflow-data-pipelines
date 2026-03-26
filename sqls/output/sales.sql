@@ -1,3 +1,3 @@
 SELECT
   *
-FROM `airflow-data-pipelines-491407.trans.sales_transform`
+FROM `airflow-data-pipelines-491407.transform.sales_trans`
