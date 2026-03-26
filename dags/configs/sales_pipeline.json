@@ -9,5 +9,6 @@
 
   "table_name": "sales",
 
-  "dataform_tags": ["sales"]
+  "dataform_tags": ["sales"],
+  "dataform_service_account": "service-651112091711@gcp-sa-dataform.iam.gserviceaccount.com"
 }

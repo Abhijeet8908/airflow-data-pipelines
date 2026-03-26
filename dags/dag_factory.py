@@ -56,6 +56,7 @@ def create_dag(config: dict) -> DAG:
         df_repo = config.get("dataform_repository") or "airflow-data-pipelines"
         df_workspace = config.get("dataform_workspace") or "dev"
         df_tags = config.get("dataform_tags", [])
+        df_service_account = config.get("dataform_service_account")
 
         # -----------------------
         # 🔹 DATASET DEFAULTS
@@ -111,6 +112,14 @@ def create_dag(config: dict) -> DAG:
             },
         )
 
+        # Construct invocation config payload
+        invocation_config = {
+            "included_tags": df_tags,
+            "transitive_dependencies_included": True
+        }
+        if df_service_account:
+            invocation_config["serviceAccount"] = df_service_account
+
         invoke_workflow = DataformCreateWorkflowInvocationOperator(
             task_id="invoke_workflow",
             project_id=config["project_id"],
@@ -118,10 +127,7 @@ def create_dag(config: dict) -> DAG:
             repository_id=df_repo,
             workflow_invocation={
                 "compilation_result": "{{ task_instance.xcom_pull('create_compilation_result')['name'] }}",
-                "invocation_config": {
-                    "included_tags": df_tags,
-                    "transitive_dependencies_included": True
-                }
+                "invocation_config": invocation_config
             },
         )
 

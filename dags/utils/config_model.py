@@ -23,6 +23,7 @@ class CsvPipelineConfig(BaseModel):
     dataform_region: Optional[str] = None
     dataform_repository: Optional[str] = None
     dataform_workspace: Optional[str] = None
+    dataform_service_account: Optional[str] = None
 
     # -----------------------
     # Validators
