@@ -18,8 +18,11 @@ class CsvPipelineConfig(BaseModel):
 
 
 
-    transform_sql_path: str
-    final_sql_path: str
+    # Dataform configurations
+    dataform_tags: List[str]
+    dataform_region: Optional[str] = None
+    dataform_repository: Optional[str] = None
+    dataform_workspace: Optional[str] = None
 
     # -----------------------
     # Validators
@@ -31,11 +34,7 @@ class CsvPipelineConfig(BaseModel):
             raise ValueError("gcs_csv_path must start with gs://")
         return v
 
-    @validator("transform_sql_path", "final_sql_path")
-    def validate_sql_path(cls, v):
-        if not v.endswith(".sql"):
-            raise ValueError("SQL file must have .sql extension")
-        return v
+
 
     @validator("tags", each_item=True)
     def validate_tags(cls, v):

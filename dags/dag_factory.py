@@ -7,8 +7,10 @@ from airflow.providers.standard.operators.empty import EmptyOperator
 from airflow.providers.google.cloud.transfers.gcs_to_bigquery import (
     GCSToBigQueryOperator,
 )
-from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
-from google.cloud import storage
+from airflow.providers.google.cloud.operators.dataform import (
+    DataformCreateCompilationResultOperator,
+    DataformCreateWorkflowInvocationOperator,
+)
 
 from pydantic import ValidationError
 
@@ -19,24 +21,6 @@ from utils.config_model import CsvPipelineConfig
 # 📁 Config Directory
 # -----------------------------
 CONFIG_DIR = os.path.join(os.path.dirname(__file__), "configs")
-
-
-# -----------------------------
-# 📖 Utility: Read SQL File
-# -----------------------------
-def read_sql_from_gcs(gcs_path: str) -> str:
-    if not gcs_path.startswith("gs://"):
-        raise ValueError("SQL path must be a GCS path")
-
-    path = gcs_path.replace("gs://", "")
-    bucket_name = path.split("/")[0]
-    blob_path = "/".join(path.split("/")[1:])
-
-    client = storage.Client()
-    bucket = client.bucket(bucket_name)
-    blob = bucket.blob(blob_path)
-
-    return blob.download_as_text()
 
 
 # -----------------------------
@@ -64,6 +48,14 @@ def create_dag(config: dict) -> DAG:
         # 🔹 START
         # -----------------------
         start = EmptyOperator(task_id="start")
+
+        # -----------------------
+        # 🔹 DATAFORM DEFAULTS
+        # -----------------------
+        df_region = config.get("dataform_region") or "us-central1"
+        df_repo = config.get("dataform_repository") or "airflow-data-pipelines"
+        df_workspace = config.get("dataform_workspace") or "dev"
+        df_tags = config.get("dataform_tags", [])
 
         # -----------------------
         # 🔹 DATASET DEFAULTS
@@ -103,45 +95,32 @@ def create_dag(config: dict) -> DAG:
         )
 
         # -----------------------
-        # 🔹 TRANSFORM LAYER
+        # 🔹 DATAFORM ORCHESTRATION
         # -----------------------
-        transform_sql = read_sql_from_gcs(config["transform_sql_path"])
-
-        ingest_to_transform_layer = BigQueryInsertJobOperator(
-            task_id="ingest_to_transform_layer",
-            configuration={
-                "query": {
-                    "query": transform_sql,
-                    "useLegacySql": False,
-                    "destinationTable": {
-                        "projectId": config["project_id"],
-                        "datasetId": transform_dataset,
-                        "tableId": transform_table,
-                    },
-                    "writeDisposition": "WRITE_TRUNCATE",
-                    "createDisposition": "CREATE_IF_NEEDED",
-                }
+        create_compilation = DataformCreateCompilationResultOperator(
+            task_id="create_compilation_result",
+            project_id=config["project_id"],
+            region=df_region,
+            repository_id=df_repo,
+            compilation_result={
+                "git_commitish": df_workspace,
+                "workspace": (
+                    f"projects/{config['project_id']}/locations/{df_region}/"
+                    f"repositories/{df_repo}/workspaces/{df_workspace}"
+                ),
             },
         )
 
-        # -----------------------
-        # 🔹 FINAL LAYER
-        # -----------------------
-        final_sql = read_sql_from_gcs(config["final_sql_path"])
-
-        ingest_to_final_layer = BigQueryInsertJobOperator(
-            task_id="ingest_to_final_layer",
-            configuration={
-                "query": {
-                    "query": final_sql,
-                    "useLegacySql": False,
-                    "destinationTable": {
-                        "projectId": config["project_id"],
-                        "datasetId": final_dataset,
-                        "tableId": final_table,
-                    },
-                    "writeDisposition": "WRITE_TRUNCATE",
-                    "createDisposition": "CREATE_IF_NEEDED",
+        invoke_workflow = DataformCreateWorkflowInvocationOperator(
+            task_id="invoke_workflow",
+            project_id=config["project_id"],
+            region=df_region,
+            repository_id=df_repo,
+            workflow_invocation={
+                "compilation_result": "{{ task_instance.xcom_pull('create_compilation_result')['name'] }}",
+                "invocation_config": {
+                    "included_tags": df_tags,
+                    "transitive_dependencies_included": True
                 }
             },
         )
@@ -157,8 +136,8 @@ def create_dag(config: dict) -> DAG:
         (
             start
             >> ingest_to_raw_layer
-            >> ingest_to_transform_layer
-            >> ingest_to_final_layer
+            >> create_compilation
+            >> invoke_workflow
             >> end
         )
 
