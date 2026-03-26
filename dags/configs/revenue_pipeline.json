@@ -1,6 +1,5 @@
 {
   "dag_id": "csv_to_bq_revenue_pipeline",
-  "schedule": "@daily",
   "tags": ["csv", "bq", "revenue"],
 
   "gcs_csv_path": "gs://my-bucket/data/revenue/*.csv",

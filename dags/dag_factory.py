@@ -54,7 +54,7 @@ def create_dag(config: dict) -> DAG:
     dag = DAG(
         dag_id=dag_id,
         default_args=default_args,
-        schedule_interval=config.get("schedule", "@daily"),
+        schedule=config.get("schedule", None),
         catchup=False,
         tags=config.get("tags", ["dag-factory"]),
     )
