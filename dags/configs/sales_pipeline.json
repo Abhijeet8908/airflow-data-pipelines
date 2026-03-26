@@ -7,7 +7,6 @@
   "skip_leading_rows": 1,
 
   "project_id": "airflow-data-pipelines-491407",
-  "dataset": "analytics",
 
   "raw_table": "sales_raw",
   "transform_table": "sales_transform",
