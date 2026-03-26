@@ -3,16 +3,16 @@
   "schedule": "@daily",
   "tags": ["csv", "bq", "sales"],
 
-  "gcs_csv_path": "gs://my-bucket/data/sales/*.csv",
+  "gcs_csv_path": "gs://us-central1-demo-composer-v-21ea21f0-bucket/input/*.csv",
   "skip_leading_rows": 1,
 
-  "project_id": "my-project",
+  "project_id": "airflow-data-pipelines-491407",
   "dataset": "analytics",
 
   "raw_table": "sales_raw",
   "transform_table": "sales_transform",
   "final_table": "sales",
 
-  "transform_sql_path": "gs://my-bucket/sql/sales/transform.sql",
-  "final_sql_path": "gs://my-bucket/sql/sales/final.sql"
+  "transform_sql_path": "gs://us-central1-demo-composer-v-21ea21f0-bucket/sqls/trans/sales_transform.sql",
+  "final_sql_path": "gs://us-central1-demo-composer-v-21ea21f0-bucket/sqls/output/sales.sql"
 }
