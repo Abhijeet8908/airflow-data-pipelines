@@ -9,6 +9,5 @@
 
   "table_name": "revenue",
 
-  "transform_sql_path": "gs://my-bucket/sql/revenue/transform.sql",
-  "final_sql_path": "gs://my-bucket/sql/revenue/final.sql"
+  "dataform_tags": ["revenue"]
 }
