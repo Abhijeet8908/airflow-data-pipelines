@@ -1,0 +1,8 @@
+config {
+  type: "table",
+  schema: "transform",
+  tags: ["revenue"]
+}
+
+SELECT *
+FROM ${ref("revenue_raw")}

@@ -1,0 +1,54 @@
+name: Deploy DAGs to Cloud Composer
+
+on:
+  push:
+    branches:
+      - main  # Change this if your default branch is 'master' or something else
+    paths:
+      - 'dags/**'  # This ensures the action ONLY runs when files in the 'dags' folder change
+      - 'sqls/**'  # This ensures the action ALSO runs when files in the 'sqls' folder change
+
+jobs:
+  deploy-dags:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Authenticate to Google Cloud using the Service Account key
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      # 3. Set up the Google Cloud SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: '${{ secrets.GCP_PROJECT_ID }}'
+
+      # 4. Sync the local dags folder to the Composer GCS bucket
+      - name: Sync DAGs to GCS
+        run: |
+          echo "Deploying DAGs to Composer..."
+          
+          # We use gcloud storage rsync to mirror the directory
+          # --recursive: copies all subdirectories
+          # --delete-unmatched-destination-objects: deletes DAGs in GCS that were deleted in GitHub
+          gcloud storage rsync ./dags/ ${{ secrets.DAGS_BUCKET_URI }} \
+            --recursive \
+            --delete-unmatched-destination-objects
+            
+          echo "DAG Deployment successful!"
+
+      - name: Sync SQL files to GCS
+        run: |
+          echo "Deploying DAGs to Composer..."
+          
+          gcloud storage rsync ./sqls/ ${{ secrets.SQL_PATH_URI }} \
+            --recursive \
+            --delete-unmatched-destination-objects
+            
+          echo "SQL Deployment successful!"
