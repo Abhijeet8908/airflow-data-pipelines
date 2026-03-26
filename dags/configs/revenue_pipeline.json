@@ -6,8 +6,8 @@
   "skip_leading_rows": 1,
 
   "project_id": "my-gcp-project",
-  "dataset": "analytics",
 
+  "table_name": "revenue",
   "raw_table": "revenue_raw",
   "transform_table": "revenue_transform",
   "final_table": "revenue",

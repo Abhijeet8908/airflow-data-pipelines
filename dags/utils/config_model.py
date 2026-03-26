@@ -11,6 +11,7 @@ class CsvPipelineConfig(BaseModel):
     skip_leading_rows: int = 0
 
     project_id: str
+    table_name: str
     raw_dataset: Optional[str] = None
     transform_dataset: Optional[str] = None
     final_dataset: Optional[str] = None
