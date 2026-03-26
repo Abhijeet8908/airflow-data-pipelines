@@ -118,7 +118,7 @@ def create_dag(config: dict) -> DAG:
             "transitive_dependencies_included": True
         }
         if df_service_account:
-            invocation_config["serviceAccount"] = df_service_account
+            invocation_config["service_account"] = df_service_account
 
         invoke_workflow = DataformCreateWorkflowInvocationOperator(
             task_id="invoke_workflow",
