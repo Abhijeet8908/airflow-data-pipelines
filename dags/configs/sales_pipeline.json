@@ -1,6 +1,5 @@
 {
   "dag_id": "csv_to_bq_sales_pipeline",
-  "schedule": "@daily",
   "tags": ["csv", "bq", "sales"],
 
   "gcs_csv_path": "gs://us-central1-demo-composer-v-21ea21f0-bucket/input/*.csv",
@@ -9,9 +8,6 @@
   "project_id": "airflow-data-pipelines-491407",
 
   "table_name": "sales",
-  "raw_table": "sales_raw",
-  "transform_table": "sales_transform",
-  "final_table": "sales",
 
   "transform_sql_path": "gs://us-central1-demo-composer-v-21ea21f0-bucket/sqls/trans/sales_transform.sql",
   "final_sql_path": "gs://us-central1-demo-composer-v-21ea21f0-bucket/sqls/output/sales.sql"
