@@ -40,7 +40,7 @@ jobs:
             --recursive \
             --delete-unmatched-destination-objects
           
-            gcloud storage rsync ./sqls/ gs://us-central1-demo-composer-v-21ea21f0-bucket/sqls/ \
+            gcloud storage rsync ./sqls/ gs://us-central1-demo-composer-v-21ea21f0-bucket/sqls \
             --recursive \
             
             
