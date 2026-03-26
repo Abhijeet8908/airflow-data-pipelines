@@ -1,9 +1,0 @@
-config {
-  type: "table",
-  schema: "transform",
-  tags: ["sales"]
-}
-
-SELECT *
-FROM ${ref("sales_raw")}
-WHERE TV is not null
