@@ -1,5 +1,4 @@
+create or replace table `airflow-data-pipelines-491407.analytics.sales` AS
 SELECT
-  customer_id,
-  SUM(amount) AS total_sales
-FROM `my-gcp-project.analytics.sales_transform`
-GROUP BY customer_id
+  *
+FROM `airflow-data-pipelines-491407.analytics.sales_transform`

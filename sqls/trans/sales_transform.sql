@@ -1,3 +1,3 @@
+create or replace table `airflow-data-pipelines-491407.analytics.sales_transform` AS
 SELECT *
-FROM `my-gcp-project.analytics.sales_raw`
-WHERE amount IS NOT NULL
+FROM `airflow-data-pipelines-491407.analytics.sales_raw`
