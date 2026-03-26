@@ -1,6 +1,6 @@
 {
   "dag_id": "csv_to_bq_sales_pipeline",
-  "schedule": "@daily",
+  "schedule": "None",
   "tags": ["csv", "bq", "sales"],
 
   "gcs_csv_path": "gs://us-central1-demo-composer-v-21ea21f0-bucket/input/*.csv",
