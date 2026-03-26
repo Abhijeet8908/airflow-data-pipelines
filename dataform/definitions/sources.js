@@ -9,4 +9,3 @@ declare({
   schema: "raw",
   name: "revenue_raw"
 });
-
