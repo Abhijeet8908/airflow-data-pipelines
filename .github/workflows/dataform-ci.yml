@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'dataform/**'
+    paths-ignore:
+      - '.github/**'
+      - 'dags/**'
 
 jobs:
   validate-dataform:
@@ -23,9 +24,7 @@ jobs:
         run: npm install -g @dataform/cli
 
       - name: Install Dataform Dependencies
-        working-directory: ./dataform
         run: dataform install
 
       - name: Compile Dataform Project
-        working-directory: ./dataform
         run: dataform compile
