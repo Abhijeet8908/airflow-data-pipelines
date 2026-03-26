@@ -6,6 +6,7 @@ on:
       - main  # Change this if your default branch is 'master' or something else
     paths:
       - 'dags/**'  # This ensures the action ONLY runs when files in the 'dags' folder change
+      - 'sqls/**'  # This ensures the action ALSO runs when files in the 'sqls' folder change
 
 jobs:
   deploy-dags:
