@@ -1,0 +1,8 @@
+config {
+  type: "table",
+  schema: "output",
+  tags: ["revenue"]
+}
+
+SELECT *
+FROM ${ref("revenue_trans")}

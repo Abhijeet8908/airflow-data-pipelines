@@ -1,0 +1,29 @@
+name: Dataform CI
+
+on:
+  pull_request:
+    paths:
+      - 'dataform/**'
+
+jobs:
+  validate-dataform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dataform CLI
+        run: npm install -g @dataform/cli
+
+      - name: Install Dataform Dependencies
+        working-directory: ./dataform
+        run: dataform install
+
+      - name: Compile Dataform Project
+        working-directory: ./dataform
+        run: dataform compile
