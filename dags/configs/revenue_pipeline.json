@@ -9,5 +9,6 @@
 
   "table_name": "revenue",
 
-  "dataform_tags": ["revenue"]
+  "dataform_tags": ["revenue"],
+  "dataform_service_account": "dataform-runner@airflow-data-pipelines-491407.iam.gserviceaccount.com"
 }
