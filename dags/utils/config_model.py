@@ -4,7 +4,7 @@ from typing import List, Optional
 
 class CsvPipelineConfig(BaseModel):
     dag_id: str
-    schedule: str = "@daily"
+    schedule: Optional[str] = None
     tags: List[str] = ["dag-factory"]
 
     gcs_csv_path: str
@@ -16,9 +16,7 @@ class CsvPipelineConfig(BaseModel):
     transform_dataset: Optional[str] = None
     final_dataset: Optional[str] = None
 
-    raw_table: str
-    transform_table: str
-    final_table: str
+
 
     transform_sql_path: str
     final_sql_path: str
