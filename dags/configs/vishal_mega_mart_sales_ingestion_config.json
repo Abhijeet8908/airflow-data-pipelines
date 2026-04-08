@@ -4,7 +4,6 @@
         "discovery",
         "CSV"
         ],
-    "file_format": "csv",
     "gcs_csv_path": "gs://us-central1-composer3-dev-277ab2a5-bucket/input/50000_Sales_Records.csv",
     "table_name": "sales",
     "skip_leading_rows": 1,
