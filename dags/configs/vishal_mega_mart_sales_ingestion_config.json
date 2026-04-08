@@ -5,9 +5,9 @@
         "CSV"
         ],
     "file_format": "csv",
-    "gcs_bucket_path": "gs://us-central1-composer3-dev-277ab2a5-bucket/input/50000_Sales_Records.csv",
+    "gcs_csv_path": "gs://us-central1-composer3-dev-277ab2a5-bucket/input/50000_Sales_Records.csv",
     "table_name": "sales",
-    "header": true,
+    "skip_leading_rows": 1,
     "dag_id": "vishal_mega_mart_sales_ingestion",
-    "schedule": None
+    "project_id": "airflow-data-pipelines-491407"
 }
