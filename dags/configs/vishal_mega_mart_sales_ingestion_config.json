@@ -8,5 +8,8 @@
     "table_name": "sales",
     "skip_leading_rows": 1,
     "dag_id": "vishal_mega_mart_sales_ingestion",
-    "project_id": "airflow-data-pipelines-491407"
+    "project_id": "airflow-data-pipelines-491407",
+    "table_name": "sales",
+    "dataform_tags": ["sales"],
+    "dataform_service_account": "dataform-runner@airflow-data-pipelines-491407.iam.gserviceaccount.com"
 }
