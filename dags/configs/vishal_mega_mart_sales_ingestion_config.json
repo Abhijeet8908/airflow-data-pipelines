@@ -1,15 +1,13 @@
-[
-    {
-        "tags": [
-            "sales",
-            "discovery",
-            "CSV"
+{
+    "tags": [
+        "sales",
+        "discovery",
+        "CSV"
         ],
-        "file_format": "csv",
-        "gcs_bucket_path": "gs://us-central1-composer3-dev-277ab2a5-bucket/input/50000_Sales_Records.csv",
-        "table_name": "sales",
-        "header": true,
-        "dag_id": "vishal_mega_mart_sales_ingestion",
-        "schedule": "None"
-    }
-]
+    "file_format": "csv",
+    "gcs_bucket_path": "gs://us-central1-composer3-dev-277ab2a5-bucket/input/50000_Sales_Records.csv",
+    "table_name": "sales",
+    "header": true,
+    "dag_id": "vishal_mega_mart_sales_ingestion",
+    "schedule": None
+}
